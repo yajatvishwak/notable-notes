@@ -1,7 +1,7 @@
 ---
 title: Tailwind and React Setup
 created: '2020-08-27T08:29:38.442Z'
-modified: '2020-08-27T13:44:44.466Z'
+modified: '2020-08-29T07:17:01.088Z'
 ---
 
 # Tailwind and React Setup 
@@ -9,100 +9,67 @@ modified: '2020-08-27T13:44:44.466Z'
 How to get started with react app and tailwindcss support
 
 
-## Create react app 
+## Create the react app
 ```
 npx create-react-app appname
 ```
 
-
-Test if app is running(Optional)
+## Install tailwindcss, autoprefixer and postcss-cli  
 ```
-cd appname
-yarn start
+npm install tailwindcss postcss-cli autoprefixer  --save-dev 
 ```
 
-## Add tailwind, postcss, autoprefixer
+## Initialize your tailwind config file
 ```
-yarn add tailwindcss postcss-cli autoprefixer -D
-```
-
-
-## Add the tailwind config file 
-```
-npx tailwindcss init --full
+npx tailwind init --full
 ```
 
-## Add the postcss.config.js file 
-- import tailwindcss and maintain consistency of the css files
+## Initialize your postcss config file
 ```
 touch postcss.config.js
 ```
-## Edit the postcss.config.js File
+## Add this to your postcss.config.js
 ```js
-//  postcss.config.js 
-module.exports =  {
-  plugins: [require('tailwind.css'), require('autoprefixer')] 
-}
-```
-## Create a styles folder in src
-- make the main.css and tailwind.css file
-```
-cd src
-mkdir styles
-cd styles 
-touch main.css
-tailwind.css
-```
-
-```
-// Folder structure
----src
-    |____ styles
-              |____ main.css
-              |____ tailwind.css
+//postcss.config.js
+ const tailwindcss = require('tailwindcss');
+ module.exports = {
+     plugins: [
+         tailwindcss('./tailwind.config.js'),
+         require('autoprefixer'),
+     ],
+ };
 
 ```
 
-## Edit the tailwind.css
+## Create a styles folder in src, which contains tailwind.css and index.css file
 ```
-//tailwind.css
-@tailwind base; 
+cd src && mkdir styles 
+cd styles && touch tailwind.css index.css
+```
+## Edit the index.css
+```css
+//index.css
+@tailwind base;
 @tailwind components;
 @tailwind utilities;
-``` 
-
-## Edit the scripts in package.json
-```js
-//...
-
-"scripts":{
-  "start": "npm run build:css && react-scripts start", //<---- change this
-  "build": "npm run build:css && react-scripts build", //<---- change this
-  "test": "react-scripts test", 
-  "eject": "react-scripts  eject",
-  "build:css": "postcss src/styles/tailwind.css -o src/styles/main.css" // <---- add this
-}
-
-//...
 ```
-
-## Import the styles/main.css file in all components (as such)
-
+## Edit your package.json 
 ```js
-// App.js 
-import React from 'react';
-import './styles/main.css';
-function App() {
-  return <div class="bg-green-600"> 
-  Hello, from tailwind 🦄
-  </div>
-
-}
+"scripts": {
+  "build:style":"tailwind build src/styles/index.css -o src/styles/tailwind.css",
+  "start": "npm run build:style && react-scripts start",
+  "build": "react-scripts build",
+  "test": "react-scripts test",
+  "eject": "react-scripts eject"
+},
 ```
+##  Delete the index.css and app.css files in your projects root directory and remove their corresponding import statements in both the Index.js and App.js files respectively.
 
 
-
-## 🎉 Setup Complete
+## Using tailwind
+```js 
+import './styles/tailwind.css';
+```
 
 
 
